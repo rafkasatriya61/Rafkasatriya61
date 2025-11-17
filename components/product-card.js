@@ -7,6 +7,15 @@ class ProductCard extends HTMLElement {
         const image = this.getAttribute('image') || 'https://placehold.co/120x120?text=Product';
         const desc = this.getAttribute('desc') || '';
 
+        // WhatsApp Number
+        const waNumber = "628999809547";
+
+        // Pesan otomatis
+        const waMessage = encodeURIComponent(`Halo, saya ingin membeli ${name}. Apakah masih tersedia?`);
+
+        // Link WhatsApp final
+        const waLink = `https://wa.me/${waNumber}?text=${waMessage}`;
+
         this.shadowRoot.innerHTML = `
             <style>
                 .product-card {
@@ -16,18 +25,13 @@ class ProductCard extends HTMLElement {
                     padding: 12px;
                     border-radius: 8px;
                     margin-bottom: 8px;
-
-                    /* AWALNYA: sedikit turun & transparan */
                     opacity: 0;
                     transform: translateY(12px);
-
-                    /* Durasi animasi 1.5 detik & delay 1 detik */
                     transition:
                         opacity 1.5s ease 1s,
                         transform 2s ease 1s;
                 }
 
-                /* Kalau host dapat class .visible → animasi fade-in + naik */
                 :host(.visible) .product-card {
                     opacity: 1;
                     transform: translateY(0);
@@ -74,22 +78,29 @@ class ProductCard extends HTMLElement {
                     border-radius: 4px;
                     font-size: 12px;
                     cursor: pointer;
-                    transition: all 0.2s;
                     white-space: nowrap;
+                    text-decoration: none;
+                    transition: all 0.2s;
                 }
 
                 .buy-btn:hover {
                     background: #6b46c1;
                 }
             </style>
+
             <div class="product-card">
                 <img src="${image}" alt="${name}" class="product-image">
+
                 <div class="product-info">
                     <div class="product-name">${name}</div>
                     <div class="product-price">Rp ${price.toLocaleString('id-ID')}</div>
-                    ${desc ? '<div class="product-desc">' + desc + '</div>' : ''}
+                    ${desc ? `<div class="product-desc">${desc}</div>` : ""}
                 </div>
-                <button class="buy-btn">Buy Now</button>
+
+                <!-- TOMBOL BUY → WHATSAPP -->
+                <a href="${waLink}" target="_blank" class="buy-btn">
+                    Buy Now
+                </a>
             </div>
         `;
     }
